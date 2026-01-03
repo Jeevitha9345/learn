@@ -1,3 +1,4 @@
+package Student_Manage;
 import java.util.Scanner;
 import java.util.ArrayList;
 class Stud_Manage{
@@ -92,6 +93,6 @@ public class Student_Management {
                 default:
                     System.out.print("Invalid input");
             }
-        }
+        }sc.close();
     }
 }
