@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Story Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .moods {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .mood-btn {
+            font-size: 32px;
+            background: #f0f0f0;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .mood-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .story-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 18px;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            line-height: 1.4;
+        }
+
+        .story-card.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎭 Mood Story Generator</h1>
+    <div class="moods">
+        <button class="mood-btn" onclick="generateStory('happy')">😊</button>
+        <button class="mood-btn" onclick="generateStory('sad')">😢</button>
+        <button class="mood-btn" onclick="generateStory('angry')">😡</button>
+        <button class="mood-btn" onclick="generateStory('bored')">😐</button>
+        <button class="mood-btn" onclick="generateStory('stressed')">😵‍💫</button>
+    </div>
+
+    <div id="story" class="story-card"></div>
+</div>
+
+<script>
+    const stories = {
+        happy: [
+            "Velu bought a chicken 🐔 thinking it can lay eggs 🥚. Chicken said: 'Bro, I'm male.' Velu fainted 😵!",
+            "Jagan's smartwatch ⌚ counted 5000 steps 🏃‍♂️ while he was sitting on his bike 🏍️. Fitness level: Pro Max 💪.",
+            "Kavya started diet with salad 🥗. One hour later, biryani 🍛 mysteriously disappeared 😋.",
+            "Teacher: 'Why are clouds ☁️ white?' Saravanan: 'If it’s black 🌧️ it becomes raincloud.' Genius level 100 🤓.",
+            "Meena asked auto driver 🚖 for AC ❄️. Driver: 'I will drive fast. Wind AC 🌬️.'",
+            "Ramu tried to dance 💃 but slipped 🤦. Floor won the battle 🏆."
+        ],
+        sad: [
+            "Praveen texted his crush 💌 'Good morning'. She replied: 'Wrong person ❌.' WiFi 📶 and dreams turned off 😢.",
+            "Rithu bought a dress 👗 online. Mirror 🪞 said: 'Try again 😅.'",
+            "Arjun uploaded singing reel 🎤. One like—from mom 👩. Mom commented: 'Delete this 🙈.'",
+            "Surya wrote in exam 📝: 'Quantum mechanics is very mechanical 🤖.' Teacher: 'Your brain is empty 🧠❌.'",
+            "Manya told her dog 🐶 'You're my best friend!' Dog went to neighbor 👀. Returned only for biscuits 🍪.",
+            "Sneha lost her phone 📱. Called it—rang in pocket 😂."
+        ],
+        angry: [
+            "Karan restarted router 📡, mobile 📱, everything. WiFi still dead ❌. Electricity ⚡: 'Surprise! Power cut 🔌.'",
+            "Hema's sambar 🍲 was called 'nice rasam' by her brother 😡. RIP brother 💀.",
+            "Teacher asked Aadhi: 'Are you listening?' 🎧 Camera on—Aadhi sleeping 🐼.",
+            "Sneha charged her phone 🔋. After 10 mins: Still 1% ⚠️. Phone charging or decorating 🎨?",
+            "Guru ordered pizza 🍕. Got idli 🍽️. Delivery guy: 'Both are round sir 😅.'",
+            "Ravi shouted at cat 🐱. Cat ignored. Ravi now meditating 🧘."
+        ],
+        bored: [
+            "Dev was bored 😐. Counted people 👥 in bus 🚌. Counted ads 📢. Counted his own boredom 🥱. PhD-level boredom 🎓.",
+            "Asha Googled 'Why am I bored?' Google replied: 'Maybe because you're Googling this 😏.'",
+            "Mano stared at a lizard 🦎. Lizard stared back 👀. Mano blinked 😳. Lost staring contest 😆.",
+            "Divya guessed fan speed: 1? ❌ 2? ❌ Mom: 'It’s OFF 📴.'",
+            "Gokul stared at clock ⏰ for 5 mins. Clock didn't move ❌. No battery 🔋. Life also same 😐.",
+            "Vicky counted ceiling tiles 🏢. Tiles: 123. Brain: 0 🤯."
+        ],
+        stressed: [
+            "Laptop 💻 froze. Vicky hit all keys like piano 🎹. Laptop: 'Bro I'm dying, not dancing 💀.'",
+            "Lavanya planned to start assignment 📝 at 10. 10:30 snack 🍩. 11:00 stress 😖. 12:00 crying 😭.",
+            "Raghav tried cooking 🍳. Burned oil 🔥. Then stove 🔥. Then hope ✨.",
+            "Manager: 'Any updates?' Keerthi: 'Yes sir, mentally 🧠.' Manager confused 🤔.",
+            "Bala went to gym 🏋️ stressed. Dropped dumbbell 🏋️‍♂️. Trainer: 'Lift your confidence first 💪.'",
+            "Ritu tried yoga 🧘‍♀️. Fell asleep 😴 mid-pose."
+        ]
+    };
+
+    const moodColors = {
+        happy: '#ffe066',
+        sad: '#a0c4ff',
+        angry: '#ff6b6b',
+        bored: '#d3d3d3',
+        stressed: '#ff9f1c'
+    };
+
+    function generateStory(mood) {
+        const list = stories[mood];
+        const randomStory = list[Math.floor(Math.random() * list.length)];
+
+        const storyBox = document.getElementById("story");
+        storyBox.innerText = randomStory;
+        storyBox.classList.remove("show");
+        void storyBox.offsetWidth; // trigger animation reflow
+        storyBox.classList.add("show");
+
+        document.body.style.background = moodColors[mood];
+    }
+</script>
+
+</body>
+</html>
